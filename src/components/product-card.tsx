@@ -20,12 +20,12 @@ export function ProductCard({ product, show, handleVote }: ProductCardProps) {
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className="w-[80%] lg:w-[30%] h-1/2 flex flex-col justify-around items-center gap-4 backdrop-blur bg-white/20 rounded shadow-md p-4"
+      className="w-[80%] lg:w-[30%] h-4/6 flex flex-col justify-around items-center gap-4 backdrop-blur bg-white/20 rounded shadow-md p-4"
     >
       <div className="w-[75%] relative">
-        <AspectRatio ratio={16 / 9} className="flex justify-center relative">
+        <AspectRatio ratio={16 / 11} className="flex justify-center relative">
           {product && (
-            <img src={product?.image_url} alt="Fehler beim Laden des Bildes" className="object-fill h-full " />
+            <img src={product?.image_url} alt="Fehler beim Laden des Bildes" className="object-fill h-full" />
           )}
         </AspectRatio>
       </div>
