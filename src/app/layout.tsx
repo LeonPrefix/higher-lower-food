@@ -10,7 +10,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="de">
       <body>
-        <main className="w-full h-screen flex flex-col lg:flex-row items-center justify-around">{children}</main>
+        <main className="w-full h-screen flex flex-col lg:flex-row items-center justify-around p-4 lg:p-0">
+          {children}
+        </main>
       </body>
     </html>
   );

@@ -11,18 +11,16 @@ import { Button } from "./ui/button";
 interface ProductCardProps {
   product: Product | undefined;
   show?: boolean;
-  ref: any;
   handleVote?: (more: boolean) => void;
 }
 
-export function ProductCard({ product, show, ref, handleVote }: ProductCardProps) {
+export function ProductCard({ product, show, handleVote }: ProductCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       className="w-[80%] lg:w-[30%] h-1/2 flex flex-col justify-around items-center gap-4 backdrop-blur bg-white/20 rounded shadow-md p-4"
-      ref={ref}
     >
       <div className="w-[75%] relative">
         <AspectRatio ratio={16 / 9} className="flex justify-center relative">

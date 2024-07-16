@@ -15,8 +15,6 @@ export default function Game() {
   const [endScreenOpen, setEndScreenOpen] = useState(false);
   const [products, setProducts] = useState<[Product | undefined, Product | undefined]>([undefined, undefined]);
 
-  const [product1, animateProduct1] = useAnimate();
-  const [product2, animateProduct2] = useAnimate();
   const [vs, animateVs] = useAnimate();
 
   useEffect(() => {
@@ -38,6 +36,11 @@ export default function Game() {
     if (win) {
       setScore(score + 1);
       axios.get("/api/products").then((r) => startChange(r.data[0]));
+      animateVs(
+        vs.current,
+        { scale: 1.1, backgroundColor: "#4ADE80" },
+        { duration: 0.2, type: "spring", stiffness: 100 }
+      );
     } else {
       setEndScreenOpen(true);
     }
@@ -47,6 +50,7 @@ export default function Game() {
     setTimeout(() => {
       setProducts((v) => [v[1], newProduct]);
       setInBetween(false);
+      animateVs(vs.current, { scale: 1, backgroundColor: "white" }, { duration: 0.1, type: "spring", stiffness: 100 });
     }, 500);
   };
 
@@ -68,7 +72,7 @@ export default function Game() {
     <>
       <Background />
       <EndScreen open={endScreenOpen} score={score} restart={restart} />
-      <ProductCard ref={product1} product={products[0]} show={true} />
+      <ProductCard product={products[0]} show={true} />
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -78,7 +82,7 @@ export default function Game() {
       >
         VS
       </motion.div>
-      <ProductCard ref={product2} product={products[1]} show={inBetween} handleVote={handleVote} />
+      <ProductCard product={products[1]} show={inBetween} handleVote={handleVote} />
     </>
   );
 }
