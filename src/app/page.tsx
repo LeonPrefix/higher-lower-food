@@ -72,7 +72,7 @@ export default function Game() {
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }}
         className="rounded-[50%] bg-white h-[80px] w-[80px] flex justify-center items-center text-3xl font-mono tracking-widest font-extrabold m-2"
         ref={vs}
       >

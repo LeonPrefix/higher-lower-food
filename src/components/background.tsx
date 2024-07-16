@@ -7,7 +7,7 @@ export function Background() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        filter: "saturate(80%) brightness(50%)",
+        filter: "saturate(80%) brightness(60%)",
         zIndex: -1,
       }}
     />
