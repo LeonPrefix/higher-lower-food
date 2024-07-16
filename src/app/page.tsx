@@ -1,5 +1,7 @@
 "use client";
 
+import { Background } from "@/components/background";
+import { EndScreen } from "@/components/end-screen";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/util/interfaces";
 import axios from "axios";
@@ -8,6 +10,9 @@ import { useEffect, useState } from "react";
 
 export default function Game() {
   const [loading, setLoading] = useState(true);
+  const [inBetween, setInBetween] = useState(false);
+  const [score, setScore] = useState(0);
+  const [endScreenOpen, setEndScreenOpen] = useState(false);
   const [products, setProducts] = useState<[Product | undefined, Product | undefined]>([undefined, undefined]);
 
   const [product1, animateProduct1] = useAnimate();
@@ -28,29 +33,41 @@ export default function Game() {
       products[0].kcal100g === products[1]?.kcal100g ||
       (products[0].kcal100g > products[1].kcal100g && !more) ||
       (products[0].kcal100g < products[1].kcal100g && more);
+    setInBetween(true);
 
     if (win) {
-      axios.get("/api/products").then((r) => setProducts((v) => [v[1], r.data[0]]));
+      setScore(score + 1);
+      axios.get("/api/products").then((r) => startChange(r.data[0]));
     } else {
-      setLoading(true);
+      setEndScreenOpen(true);
     }
+  };
+
+  const startChange = (newProduct: Product) => {
+    setTimeout(() => {
+      setProducts((v) => [v[1], newProduct]);
+      setInBetween(false);
+    }, 500);
+  };
+
+  const restart = () => {
+    setScore(0);
+    setInBetween(false);
+    setLoading(true);
+    setEndScreenOpen(false);
+
+    axios
+      .get("/api/products?amount=2")
+      .then((r) => setProducts(r.data))
+      .finally(() => setLoading(false));
   };
 
   if (loading) return <></>;
 
   return (
     <>
-      <div
-        className="w-full h-screen fixed"
-        style={{
-          background: 'url("/background.jpg")',
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          filter: "saturate(80%) brightness(50%)",
-          zIndex: -1,
-        }}
-      ></div>
+      <Background />
+      <EndScreen open={endScreenOpen} score={score} restart={restart} />
       <ProductCard ref={product1} product={products[0]} show={true} />
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
@@ -61,7 +78,7 @@ export default function Game() {
       >
         VS
       </motion.div>
-      <ProductCard ref={product2} product={products[1]} handleVote={handleVote} />
+      <ProductCard ref={product2} product={products[1]} show={inBetween} handleVote={handleVote} />
     </>
   );
 }
